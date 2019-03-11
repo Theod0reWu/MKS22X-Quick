@@ -1,4 +1,5 @@
-public static Quick{
+import java.util.*;
+public class Quick{
  public static int quickselect( int [] data, int k){
     int pivPos = k + 1;
     int start = 0; int end = data.length - 1; Random r = new Random();
@@ -32,5 +33,16 @@ public static Quick{
       if (k-1 > end){end = prevEnd; start++;}
     }
     return data[pivPos];
-  } 
+  }
+  public static void main(String[] args){
+    int[] data = new int[300];
+    for (int i = 0; i < 300; i++){
+      data[299-i] = i+1;
+    }
+    System.out.println("(0)"+data[0]);
+    System.out.println("(1)"+data[1]);
+    for (int i = 0; i < 300; i++){
+      System.out.println(i+": "+quickselect(data,i));
+    }
+  }
 }
