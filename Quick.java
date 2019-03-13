@@ -85,7 +85,5 @@ public class Quick{
   }
 
   public static void main(String[] args){
-    data = new int[] {0};
-    for (int i = 0; i < data.length; i++){System.out.println(quickselect(data, i));}
   }
 }
