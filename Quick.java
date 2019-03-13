@@ -1,39 +1,17 @@
 import java.util.*;
 public class Quick{
- public static int quickselect( int [] data, int k){
-    int pivPos = -1;
-    int start = 0; int end = data.length - 1; Random r = new Random();
-    while(pivPos != k){ int prevEnd = end; int prevStart = start;
-      int pick = 0;
-      if (start < end){pick = r.nextInt(end-start) + start;}
-      else {return data[start];}
-      int pivot = data[pick];
-      //swap with the front
-      int copy = data[start];
-      data[start] = data[pick];
-      data[pick] = copy;
-      start++;
-
-      while (start != end && start < end){
-        if (data[start] > pivot){
-          copy = data[end];
-          data[end] = data[start];
-          data[start] = copy;
-          end--;
-        }
-        else if (data[start] <= pivot){
-          start++;
-        }
-      }
-
-      if (data[prevStart] > data[end]) { copy = data[end]; data[end] = data[prevStart]; data[prevStart] = copy;}
-      else {copy = data[end - 1]; data[end-1] = data[prevStart]; data[prevStart] = copy; end--; start--;}
-      pivPos = end;
-      if (k < end){start = prevStart; end--;}
-      if (k > end){end = prevEnd; start++;}
-      //printArray(data);
+  public static int quickselect( int [] data, int k){
+    if (k < 0 || k >= data.length){throw new IllegalArgumentException("kth smallest interger does not exist");}
+    if (data.length == 1) {return data[0];}
+    int[] oldBounds;
+    int[] bounds = new int[]{0, data.length-1};
+    while (true){
+      oldBounds = new int[] {bounds[0],bounds[1]};
+      bounds = partitionDutch(data, bounds[0], bounds[1]);
+      if (k >= bounds[0] && k < bounds[1]) {return data[k];}
+      else if (k < bounds[0]){bounds = new int[]{oldBounds[0], bounds[0]};}
+      else {bounds = new int[] {bounds[1], oldBounds[1]};}
     }
-    return data[pivPos];
   }
   public static void fillRandom(int[] data){
     Random r = new Random();
@@ -48,7 +26,7 @@ public class Quick{
       data[rand] = copy;
     }
   }
-  public static void scramble(int[] data){
+  public static void scramble(int[] data){ //scrambles array
     Random r = new Random();
     int index = 0;
     for (int i = 0; i < data.length; i++){
@@ -69,7 +47,7 @@ public class Quick{
     System.out.println(out+"]");
   }
   public static int[] partitionDutch(int[] data,int lo, int hi){
-    if (hi == lo) {return new int[]{lo,lo};}
+    if (hi == lo) {return new int[]{lo,lo+1};}
     int[] out = new int[2];
     Random r = new Random();
     int pick = r.nextInt(hi - lo) + lo;
@@ -78,9 +56,9 @@ public class Quick{
     data[lo] = data[pick]; //swap with lowest
     data[pick] = copy;
 
-    int lt = lo+1;int gt = hi; int v = data[lo];
+    int lt = lo;int gt = hi; int v = data[lo];
     int i = lt;
-    while (i != gt){
+    while (i != gt+1){
       if (data[i] == v){
         i++;
       }
@@ -97,10 +75,9 @@ public class Quick{
         data[gt] = copy;
         gt--;
       }
-      printArray(data);
+      //printArray(data);
     }
-
-    out[0] = lt; out[1] = gt; printArray(out);
+    out[0] = lt; out[1] = gt+1; //printArray(out);
     return out;
   }
   public void quicksort(int[] data){
@@ -108,17 +85,7 @@ public class Quick{
   }
 
   public static void main(String[] args){
-    int[] data = new int[10];
-    /*fillRandom(data);
-    for (int i : data){
-      System.out.print(i+" ");
-    }
-    System.out.println();
-    int select = (int) Math.abs(Math.random() * data.length);
-    System.out.println(select+":"+quickselect(data, select));
-   */
-    data = new int[] {1,2,3,3,3,3,3,4,5,6};
-    scramble(data);
-    partitionDutch(data,0,data.length - 1);
+    data = new int[] {0};
+    for (int i = 0; i < data.length; i++){System.out.println(quickselect(data, i));}
   }
 }
