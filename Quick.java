@@ -3,10 +3,9 @@ public class Quick{
   public static int quickselect( int [] data, int k){
     if (k < 0 || k >= data.length){throw new IllegalArgumentException("kth smallest interger does not exist");}
     if (data.length == 1) {return data[0];}
-    int[] oldBounds;
     int[] bounds = new int[]{0, data.length-1};
     while (true){
-      oldBounds = new int[] {bounds[0],bounds[1]};
+      int[] oldBounds = new int[] {bounds[0],bounds[1]};
       bounds = partitionDutch(data, bounds[0], bounds[1]);
       if (k >= bounds[0] && k < bounds[1]) {return data[k];}
       else if (k < bounds[0]){bounds = new int[]{oldBounds[0], bounds[0]};}
@@ -75,15 +74,23 @@ public class Quick{
         data[gt] = copy;
         gt--;
       }
-      //printArray(data);
     }
     out[0] = lt; out[1] = gt+1; //printArray(out);
     return out;
   }
-  public void quicksort(int[] data){
-
+  public static void quicksort(int[] data){
+    quicksort(data, 0, data.length - 1);
+  }
+  public static void quicksort(int[] data, int lo, int hi){
+    if (lo >= hi){return;}
+    int[] piv = partitionDutch(data, lo, hi);
+    quicksort(data, lo, piv[0]-1);
+    quicksort(data, piv[1], hi);
   }
 
   public static void main(String[] args){
+    int[] data = new int[] {9,8,6,5,4,3,2,2,1};
+    quicksort(data);
+    printArray(data);
   }
 }
