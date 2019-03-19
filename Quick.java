@@ -105,7 +105,7 @@ public class Quick{
 		}
   }
   public static void quicksort(int[] data, int lo, int hi){
-    if (lo >= hi - 50){insertionSort(data,lo,hi+1); return;}
+    if (lo >= hi - 256){insertionSort(data,lo,hi+1); return;}
     int[] piv = partitionDutch(data, lo, hi);
     quicksort(data, lo, piv[0]-1);
     quicksort(data, piv[1], hi);
